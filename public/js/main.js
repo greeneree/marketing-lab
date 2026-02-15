@@ -156,7 +156,7 @@ async function generateStrategy() {
 
     try {
         // API 호출
-        const response = await fetch('/api/generate-strategy', {
+        const response = await fetch('/api/strategy', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
