@@ -20,7 +20,5 @@
       "dest": "/public/$1"
     }
   ],
-  "env": {
-    "GOOGLE_API_KEY": "@google-api-key"
-  }
+
 }
