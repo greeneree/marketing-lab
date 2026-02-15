@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || process.env.GOOGLE_AISTUDIO_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -28,7 +29,9 @@ export default async function handler(req, res) {
             competitors, faqs, bookingMethods, reviews, strength
         });
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
+        const model = genAI.getGenerativeModel({  
+            model: "gemini-1.5-flash", apiVersion: 'v1'
+        })
         const result = await model.generateContent(prompt);
         const response = await result.response;
         const text = response.text();
