@@ -1,6 +1,6 @@
      1	import { GoogleGenerativeAI } from '@google/generative-ai';
      2	
-     3	const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.GOOGLE_AISTUDIO_KEY);
+     3	const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.GOOGLE_AISTUDIO_KEY || process.env.GOOGLE_AISTUDIO_KEY);
      4	
      5	export default async function handler(req, res) {
      6	    // CORS 헤더
