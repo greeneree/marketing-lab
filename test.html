@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마케팅랩 - 파일 로드 테스트</title>
+    <link rel="stylesheet" href="assets/index-Bq0k4g9e.css">
+</head>
+<body>
+    <div style="padding: 40px; font-family: Arial, sans-serif;">
+        <h1>🔍 마케팅랩 파일 로드 테스트</h1>
+        <div id="test-results"></div>
+        
+        <div id="root"></div>
+    </div>
+
+    <script>
+        const results = document.getElementById('test-results');
+        
+        // CSS 파일 로드 확인
+        const cssLoaded = document.styleSheets.length > 0;
+        results.innerHTML += `<p>✅ CSS 파일 수: ${document.styleSheets.length}</p>`;
+        
+        // JS 파일 로드 테스트
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = 'assets/index-C69fXZWc.js';
+        script.onload = () => {
+            results.innerHTML += '<p>✅ JavaScript 파일 로드 성공</p>';
+            
+            // React 앱이 마운트되었는지 확인
+            setTimeout(() => {
+                const root = document.getElementById('root');
+                if (root && root.children.length > 0) {
+                    results.innerHTML += '<p>✅ React 앱이 정상적으로 마운트되었습니다!</p>';
+                    results.innerHTML += `<p>Root 요소 내용: ${root.innerHTML.substring(0, 200)}...</p>`;
+                } else {
+                    results.innerHTML += '<p>⚠️ React 앱이 마운트되지 않았습니다.</p>';
+                    results.innerHTML += '<p>이는 라우팅 문제일 수 있습니다.</p>';
+                }
+            }, 2000);
+        };
+        script.onerror = () => {
+            results.innerHTML += '<p>❌ JavaScript 파일 로드 실패</p>';
+        };
+        document.body.appendChild(script);
+    </script>
+</body>
+</html>
