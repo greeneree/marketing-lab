@@ -3,7 +3,6 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || process.env.GOOGLE_AISTUDIO_KEY);
 
 export default async function handler(req, res) {
-    // CORS 헤더
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -18,53 +17,24 @@ export default async function handler(req, res) {
 
     try {
         const {
-            industry,
-            storeName,
-            district,
-            monthlySales,
-            platforms,
-            hasHitProduct,
-            hitProductName,
-            concern,
-            topServices,
-            competitors,
-            faqs,
-            bookingMethods,
-            reviews,
-            strength
+            industry, storeName, district, monthlySales, platforms,
+            hasHitProduct, hitProductName, concern, topServices,
+            competitors, faqs, bookingMethods, reviews, strength
         } = req.body;
 
-        // AI 프롬프트 생성
         const prompt = generatePrompt({
-            industry,
-            storeName,
-            district,
-            monthlySales,
-            platforms,
-            hasHitProduct,
-            hitProductName,
-            concern,
-            topServices,
-            competitors,
-            faqs,
-            bookingMethods,
-            reviews,
-            strength
+            industry, storeName, district, monthlySales, platforms,
+            hasHitProduct, hitProductName, concern, topServices,
+            competitors, faqs, bookingMethods, reviews, strength
         });
 
-        // Gemini API 호출
         const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
         const result = await model.generateContent(prompt);
         const response = await result.response;
         const text = response.text();
 
-        // JSON 파싱
         const strategyData = parseAIResponse(text, {
-            industry,
-            district,
-            monthlySales,
-            hasHitProduct,
-            hitProductName
+            industry, district, monthlySales, hasHitProduct, hitProductName
         });
 
         return res.status(200).json(strategyData);
@@ -106,7 +76,7 @@ ${data.faqs.map((q, i) => `  ${i+1}. ${q}`).join('\n')}` : '';
 
     return `
 당신은 생존이 걸린 골목상권에서 죽어가는 가게를 살려내는 10년 이상 경력의 로컬 비즈니스 전문 마케팅/그로스 컨설턴트입니다.
-목표는 "보기 좋은 조언"이 아니라 **12주 내 매출/신규/재방문을 실제로 올리는 실행안**입니다.
+목표는 "보기 좋은 조언"이 아니라 12주 내 매출/신규/재방문을 실제로 올리는 실행안입니다.
 
 [중요 규칙]
 - 근거 없는 업계 평균/수치를 만들어내지 마세요.
@@ -225,7 +195,6 @@ ${faqsText}
 
 function parseAIResponse(text, context) {
     try {
-        // JSON 추출
         let jsonText = text.trim();
         if (jsonText.startsWith('```')) {
             jsonText = jsonText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -233,7 +202,6 @@ function parseAIResponse(text, context) {
 
         const parsed = JSON.parse(jsonText);
 
-        // 기본 구조로 변환 (기존 UI 호환)
         const result = {
             diagnosis: {
                 strengths: parsed.diagnosis?.strengths?.map(s => s.title || s) || [],
@@ -262,7 +230,6 @@ function parseAIResponse(text, context) {
 
 function generateWeeklyPlan(aiPlan, industry) {
     if (aiPlan && aiPlan.length > 0) {
-        // AI가 제공한 계획을 일자별로 변환
         const result = [];
         aiPlan.forEach(wp => {
             const days = wp.days || [];
@@ -277,20 +244,14 @@ function generateWeeklyPlan(aiPlan, industry) {
         return result;
     }
 
-    // 기본 12주 계획
     const plans = [];
     for (let week = 1; week <= 12; week++) {
         plans.push({
             week,
             theme: `${week}주차 실행`,
             days: [
-                "고객 DB 정리",
-                "SNS 콘텐츠 제작",
-                "지역 제휴 협의",
-                "이벤트 준비",
-                "고객 피드백 수집",
-                "주간 성과 분석",
-                "다음주 계획 수립"
+                "고객 DB 정리", "SNS 콘텐츠 제작", "지역 제휴 협의",
+                "이벤트 준비", "고객 피드백 수집", "주간 성과 분석", "다음주 계획 수립"
             ]
         });
     }
@@ -312,18 +273,12 @@ function generateKeywords(industry, district) {
     const districtName = district.replace('동', '');
     return {
         naver: [
-            `마포 ${industry}`,
-            `${district} ${industry}`,
-            `${districtName} ${industry}`,
-            `마포 추천 ${industry}`,
-            `${district} 맛집`
+            `마포 ${industry}`, `${district} ${industry}`, `${districtName} ${industry}`,
+            `마포 추천 ${industry}`, `${district} 맛집`
         ],
         kakao: [
-            `${district} ${industry}`,
-            `마포구 ${industry}`,
-            `${districtName} ${industry} 추천`,
-            `홍대 ${industry}`,
-            `합정 ${industry}`
+            `${district} ${industry}`, `마포구 ${industry}`, `${districtName} ${industry} 추천`,
+            `홍대 ${industry}`, `합정 ${industry}`
         ]
     };
 }
@@ -337,10 +292,7 @@ function generateExpectedResults(currentSales) {
     return {
         current: { sales: current },
         after: { sales: after },
-        increase: {
-            sales: increase,
-            profit: profit
-        },
+        increase: { sales: increase, profit: profit },
         roi: 3.5
     };
 }
@@ -351,15 +303,13 @@ function getDefaultResponse(context) {
             strengths: ["지역 내 인지도", "기존 고객 만족도", "서비스 품질"],
             weaknesses: ["신규 고객 유입 부족", "온라인 마케팅 미흡", "재방문율 개선 필요"]
         },
-        strategies: [
-            {
-                title: "지역 제휴 마케팅",
-                description: "인근 업체와 제휴하여 상호 할인 혜택 제공",
-                cost: "5만원",
-                difficulty: "하",
-                effect: "신규 고객 월 10명 증가"
-            }
-        ],
+        strategies: [{
+            title: "지역 제휴 마케팅",
+            description: "인근 업체와 제휴하여 상호 할인 혜택 제공",
+            cost: "5만원",
+            difficulty: "하",
+            effect: "신규 고객 월 10명 증가"
+        }],
         weeklyPlan: generateWeeklyPlan(null, context.industry),
         hashtags: generateHashtags(context.industry, context.district),
         keywords: generateKeywords(context.industry, context.district),
