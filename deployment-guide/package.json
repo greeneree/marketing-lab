@@ -2,7 +2,6 @@
   "name": "marketing-lab",
   "version": "2.0.0",
   "description": "소상공인을 위한 AI 마케팅 전략 생성기",
-  "type": "module",
   "scripts": {
     "dev": "vercel dev",
     "deploy": "vercel --prod"
