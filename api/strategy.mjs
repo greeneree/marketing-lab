@@ -77,7 +77,7 @@ function generatePrompt(data) {
 - 리뷰 현황:
   * 네이버: ${data.reviews.naver?.count || 0}개, 평점 ${data.reviews.naver?.rating || 0}/5.0
   * 카카오: ${data.reviews.kakao?.count || 0}개, 평점 ${data.reviews.kakao?.rating || 0}/5.0
-  * 구글: ${data.reviews.google?.count || 0}개, 평점 ${data.reviews.google?.rating || 0}/5.0` : '';
+  * 구글: ${data.reviews.google?.count || 0}개, 평점 ${data.reviews.google?.rating || 0}/5.0` : '- 리뷰 정보 없음';
 
     const competitorsText = data.competitors?.length > 0 ? `
 - 경쟁 매장:
