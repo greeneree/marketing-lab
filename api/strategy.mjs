@@ -54,10 +54,19 @@ export default async function handler(req, res) {
 
         // Gemini API 호출
         // 56번 줄을 이렇게 변경
-        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+        const model = genAI.getGenerativeModel(
+                        { model: "gemini-1.5-flash" }, // 첫 번째 주머니: 모델 이름
+                        { apiVersion: "v1" }           // 두 번째 주머니: 정식 사무실(v1) 주소 강제 지정
+        );
         const result = await model.generateContent(prompt);
         const response = await result.response;
         const text = response.text();
+
+        return res.status(200).json({ strategy: text });
+    } catch (error) {
+        console.error("API Error:", error);
+        return res.status(500).json({ error: error.message });
+    }
 
         // JSON 파싱
         const strategyData = parseAIResponse(text, {
