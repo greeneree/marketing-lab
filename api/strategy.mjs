@@ -35,7 +35,8 @@ export default async function handler(req, res) {
         // 3. [핵심 수정] Gemini API 호출 설정
         // 인자를 두 개의 객체로 나누어 넣는 것이 정석 문법이야!
         const model = genAI.getGenerativeModel(
-            { model: 'gemini-1.5-flash' }, // Pro보다 가볍고 오류가 적은 Flash 추천
+            { model: 'gemini-1.5-flash' },{ apiVersion: "v1" }            // 정식 v1 주소로 강제 고정!
+); // Pro보다 가볍고 오류가 적은 Flash 추천
         );
 
         const result = await model.generateContent(prompt);
