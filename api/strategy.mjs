@@ -1,3 +1,4 @@
+console.log("API Key Prefix:", process.env.GEMINI_API_KEY?.substring(0, 7));
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // 환경 변수 우선순위 설정 (Vercel 설정에 맞춰 GEMINI_API_KEY 권장)
