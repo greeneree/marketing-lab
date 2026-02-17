@@ -3,6 +3,7 @@
 // ========================================
 let selectedIndustry = '';
 let selectedIndustryIcon = '';
+let isPaid = false; // 결제 상태
 
 // 마포구 동명 데이터
 const mapoDistricts = [
@@ -11,6 +12,14 @@ const mapoDistricts = [
     "망원동", "연남동", "성산동", "중동", "상암동"
 ];
 
+// 업종별 특장점 예시
+const strengthExamples = {
+    '한의원': '필라테스 연계 자세 치료',
+    '네일샵': '반려동물 동반 가능',
+    '카페': '아이돌 생일 카페 지원 가능',
+    '헬스장': '1일권(Daily Pass) 판매'
+};
+
 // ========================================
 // 페이지 로드 시 초기화
 // ========================================
@@ -18,7 +27,29 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeDistricts();
     initializeTimeSelects();
     initializeConcernOther();
+    checkPaymentStatus();
 });
+
+// ========================================
+// 결제 상태 확인
+// ========================================
+function checkPaymentStatus() {
+    const paid = localStorage.getItem('marketinglab_paid');
+    if (paid === 'true') {
+        isPaid = true;
+    }
+}
+
+// ========================================
+// 모달 열기/닫기
+// ========================================
+function openIndustryModal() {
+    document.getElementById('industry-modal').classList.remove('hidden');
+}
+
+function closeIndustryModal() {
+    document.getElementById('industry-modal').classList.add('hidden');
+}
 
 // ========================================
 // 마포구 동명 초기화
@@ -34,7 +65,7 @@ function initializeDistricts() {
 }
 
 // ========================================
-// 시간 선택 박스 초기화
+// 시간 선택 박스 초기화 (없음 옵션 추가)
 // ========================================
 function initializeTimeSelects() {
     const timeSelects = [
@@ -46,6 +77,14 @@ function initializeTimeSelects() {
 
     timeSelects.forEach(id => {
         const select = document.getElementById(id);
+        
+        // '없음' 옵션 추가
+        const noneOption = document.createElement('option');
+        noneOption.value = 'none';
+        noneOption.textContent = '없음';
+        select.appendChild(noneOption);
+        
+        // 시간 옵션 추가
         for (let hour = 0; hour <= 23; hour++) {
             const option = document.createElement('option');
             option.value = hour;
@@ -86,6 +125,9 @@ function selectIndustry(industry, icon) {
     selectedIndustry = industry;
     selectedIndustryIcon = icon;
     
+    // 모달 닫기
+    closeIndustryModal();
+    
     // 화면 전환
     document.getElementById('intro-screen').classList.add('hidden');
     document.getElementById('info-screen').classList.remove('hidden');
@@ -93,6 +135,12 @@ function selectIndustry(industry, icon) {
     // 선택한 업종 표시
     document.getElementById('selected-industry-icon').textContent = icon;
     document.getElementById('selected-industry-name').textContent = industry;
+    
+    // 특장점 예시 업데이트
+    const strengthPlaceholder = document.getElementById('strength-placeholder');
+    if (strengthPlaceholder) {
+        strengthPlaceholder.textContent = `예: ${strengthExamples[industry] || '우리 가게만의 강점을 입력하세요'}`;
+    }
     
     // 맨 위로 스크롤
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -196,6 +244,24 @@ function toggleSnsFields(show) {
         document.getElementById('sns-followers').value = '';
         document.getElementById('sns-frequency').value = '';
         document.getElementById('sns-hashtags').value = '';
+        document.getElementById('no-hashtags').checked = false;
+    }
+}
+
+// ========================================
+// 해시태그 입력 토글 (Phase 2 신규)
+// ========================================
+function toggleHashtagInput() {
+    const noHashtags = document.getElementById('no-hashtags').checked;
+    const hashtagInput = document.getElementById('sns-hashtags');
+    
+    if (noHashtags) {
+        hashtagInput.value = '';
+        hashtagInput.disabled = true;
+        hashtagInput.placeholder = '해시태그를 사용하지 않습니다';
+    } else {
+        hashtagInput.disabled = false;
+        hashtagInput.placeholder = '예: #마포한의원 #홍대한의원';
     }
 }
 
@@ -344,26 +410,26 @@ function collectFormData() {
     const paymentMethods = Array.from(document.querySelectorAll('input[name="payment"]:checked'))
         .map(cb => cb.value);
     
-    // 리뷰 정보
+    // 리뷰 정보 (Phase 2: 평점 제거, 리뷰 수만)
     const reviews = {};
-    const platforms_review = ['naver', 'kakao', 'google'];
+    const platforms_review = ['naver', 'kakao']; // 구글 제거
     platforms_review.forEach(platform => {
         const count = document.querySelector(`.review-count[data-platform="${platform}"]`).value;
-        const rating = document.querySelector(`.review-rating[data-platform="${platform}"]`).value;
         reviews[platform] = {
-            count: parseInt(count) || 0,
-            rating: parseFloat(rating) || 0
+            count: parseInt(count) || 0
         };
     });
     
-    // SNS 정보
+    // SNS 정보 (Phase 2: 해시태그 사용 안 함 옵션)
     const snsActive = document.querySelector('input[name="sns-active"]:checked').value === 'yes';
     let snsInfo = null;
     if (snsActive) {
+        const noHashtags = document.getElementById('no-hashtags').checked;
         snsInfo = {
             followers: parseInt(document.getElementById('sns-followers').value) || 0,
             frequency: parseInt(document.getElementById('sns-frequency').value) || 0,
-            hashtags: document.getElementById('sns-hashtags').value.trim()
+            hashtags: noHashtags ? '' : document.getElementById('sns-hashtags').value.trim(),
+            noHashtags: noHashtags
         };
     }
     
@@ -381,6 +447,9 @@ function collectFormData() {
         const name = radio.name.split('-')[0]; // 예: "staff-한의원" -> "staff"
         industrySpecific[name] = radio.value;
     });
+    
+    // 특장점 (Phase 2 신규)
+    const uniqueStrength = document.getElementById('unique-strength')?.value.trim() || '';
     
     return {
         industry: selectedIndustry,
@@ -407,7 +476,8 @@ function collectFormData() {
         paymentMethods,
         reviews,
         snsInfo,
-        industrySpecific
+        industrySpecific,
+        uniqueStrength  // Phase 2 신규
     };
 }
 
@@ -473,7 +543,7 @@ async function submitAndGenerate() {
 }
 
 // ========================================
-// 결과 화면 표시
+// 결과 화면 표시 (Phase 2: 블러 처리 추가)
 // ========================================
 function displayResults(result) {
     console.log('📊 결과 표시 시작:', result);
@@ -497,8 +567,104 @@ function displayResults(result) {
     // 예상 결과
     displayExpectedResults(result.expectedResults);
 
+    // Phase 2: 결제 여부에 따라 블러 처리
+    if (!isPaid) {
+        applyBlurEffect();
+    }
+
     // 맨 위로 스크롤
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ========================================
+// 블러 효과 적용 (Phase 2 신규)
+// ========================================
+function applyBlurEffect() {
+    // 첫 번째 섹션(진단)만 제외하고 나머지 블러 처리
+    const sections = [
+        'strategies-container',
+        'weekly-plan-container',
+        'hashtags-container',
+        'keywords-container',
+        'expected-results-container'
+    ];
+    
+    sections.forEach(sectionId => {
+        const section = document.getElementById(sectionId);
+        if (section && section.parentElement) {
+            section.parentElement.classList.add('blurred-section');
+            
+            // 언락 오버레이 추가
+            const overlay = document.createElement('div');
+            overlay.className = 'unlock-overlay';
+            overlay.innerHTML = `
+                <h3>🔒 전체 전략을 확인하시겠어요?</h3>
+                <button class="payment-button" onclick="showPaymentOptions()">
+                    ₩9,900 결제하고 전체 보기
+                </button>
+                <button class="free-code-button" onclick="showCodeInput()">
+                    무료코드로 미리보기
+                </button>
+                <div id="code-input-section" class="code-input-section hidden">
+                    <input type="text" id="code-input" class="code-input" placeholder="코드 입력" maxlength="5">
+                    <button class="code-submit-btn" onclick="validateCode()">확인</button>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-top: 10px;">
+                        정답: 12345
+                    </p>
+                </div>
+            `;
+            section.parentElement.appendChild(overlay);
+        }
+    });
+}
+
+// ========================================
+// 결제 옵션 표시 (Phase 2 신규)
+// ========================================
+function showPaymentOptions() {
+    alert('결제 기능은 곧 오픈 예정입니다!\n현재는 무료코드(12345)로 전체 내용을 확인하실 수 있습니다.');
+}
+
+// ========================================
+// 코드 입력 섹션 표시 (Phase 2 신규)
+// ========================================
+function showCodeInput() {
+    document.getElementById('code-input-section').classList.remove('hidden');
+}
+
+// ========================================
+// 코드 검증 (Phase 2 신규)
+// ========================================
+function validateCode() {
+    const code = document.getElementById('code-input').value.trim();
+    
+    if (code === '12345') {
+        // 결제 상태 저장
+        localStorage.setItem('marketinglab_paid', 'true');
+        isPaid = true;
+        
+        // 블러 효과 제거
+        unlockAllResults();
+        
+        alert('✅ 코드가 확인되었습니다!\n전체 전략을 확인하세요.');
+    } else {
+        alert('❌ 잘못된 코드입니다.\n올바른 코드를 입력해주세요.');
+    }
+}
+
+// ========================================
+// 전체 결과 언락 (Phase 2 신규)
+// ========================================
+function unlockAllResults() {
+    // 모든 블러 섹션 제거
+    document.querySelectorAll('.blurred-section').forEach(section => {
+        section.classList.remove('blurred-section');
+    });
+    
+    // 모든 언락 오버레이 제거
+    document.querySelectorAll('.unlock-overlay').forEach(overlay => {
+        overlay.remove();
+    });
 }
 
 // ========================================
