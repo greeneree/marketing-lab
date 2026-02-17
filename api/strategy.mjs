@@ -3,6 +3,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 // 환경 변수 우선순위 설정
 const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GOOGLE_AISTUDIO_KEY;
 console.log("🔑 API Key 상태:", apiKey ? `설정됨 (${apiKey.substring(0, 7)}...)` : "❌ 없음");
+console.log("📌 Vercel 배포 확인: 2026-02-17 v2.3.2");
 
 const genAI = new GoogleGenerativeAI(apiKey);
 
@@ -28,8 +29,11 @@ export default async function handler(req, res) {
         const prompt = generatePrompt(formData);
         console.log("📝 생성된 프롬프트 길이:", prompt.length);
 
-        // Gemini API 호출
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        // Gemini API 호출 (v1beta API 명시)
+        const model = genAI.getGenerativeModel(
+            { model: "gemini-2.5-flash" },
+            { apiVersion: "v1beta" }
+        );
         const result = await model.generateContent(prompt);
         const response = await result.response;
         const text = response.text();
