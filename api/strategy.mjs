@@ -26,11 +26,62 @@ export default async function handler(req, res) {
         } = req.body;
 
         // 2. AI 프롬프트 생성 함수 호출
-        const prompt = generatePrompt({
-            industry, storeName, district, monthlySales, platforms,
-            hasHitProduct, hitProductName, concern, topServices,
-            competitors, faqs, bookingMethods, reviews, strength
-        });
+       const prompt = `
+        당신은 15년 경력의 전략적인, 로컬 비즈니스 생존 전문가입니다. 
+        당신의 목표는 뻔한 위로가 아니라, 데이터를 기반으로 사장님의 뒤통수를 치는 날카로운 독설 컨설턴트가 되는 것입니다.
+
+        # 고객 입력 데이터
+        - 업종: ${industry}
+        - 상호명: ${storeName}
+        - 위치: 마포구 ${district}
+        - 월 매출: ${monthlySales}만원
+        - 온라인 등록: ${platforms.join(', ')}
+        - 히트 상품: ${hasHitProduct ? hitProductName : '없음'}
+        - 현재 고민: ${concern}
+        - 주요 서비스: ${topServices}
+        - 경쟁 매장: ${JSON.stringify(competitors)}
+        - 고객 FAQ: ${faqs.join(' / ')}
+        - 예약/결제: ${bookingMethods.join(', ')}
+        - 리뷰 현황: 네이버(${reviews.naver.count}개, ${reviews.naver.rating}점), 카카오(${reviews.kakao.count}개, ${reviews.kakao.rating}점)
+        - 사장님이 생각하는 강점: ${strength}
+
+        # 분석 지침
+        1. 사장님이 말한 '강점'이 주변 경쟁사(${JSON.stringify(competitors)}) 대비 진짜 경쟁력이 있는지 비판적으로 검토하라.
+        2. 리뷰 평점이 낮거나 개수가 부족하면 마포구 ${district} 상권에서 도태될 수 있음을 경고하라.
+        3. 12주 계획은 "1일차: [행동]" 형식으로, 당장 내일부터 돈 안 들이고 할 수 있는 것부터 시켜라.
+
+        # 출력 규칙 (반드시 JSON으로만 대답할 것)
+        {
+          "diagnosis": {
+            "strengths": ["날카로운 강점 분석 3개"],
+            "weaknesses": ["뼈아픈 약점 지적 3개"]
+          },
+          "strategies": [
+            {
+              "title": "즉시 실행 전략",
+              "description": "구체적인 방법",
+              "cost": "예산",
+              "difficulty": "1~3",
+              "effect": "예상 효과"
+            }
+          ],
+          "weeklyPlan": [
+            {
+              "week": 1,
+              "theme": "정신 개조 및 기본 세팅",
+              "days": ["1일차 액션", "2일차 액션", "3일차 액션", "4일차 액션", "5일차 액션", "6일차 액션", "7일차 액션"]
+            }
+          ],
+          "hashtags": ["#태그1", "#태그2"],
+          "keywords": { "naver": ["키워드"], "kakao": ["키워드"] },
+          "expectedResults": {
+            "current": { "sales": ${monthlySales} },
+            "after": { "sales": ${Math.round(monthlySales * 1.3)} },
+            "increase": { "sales": ${Math.round(monthlySales * 0.3)}, "profit": ${Math.round(monthlySales * 0.1)} },
+            "roi": 3.5
+          }
+        }
+`;
 
         // 3. [핵심 수정] Gemini API 호출 설정
         // 인자를 두 개의 객체로 나누어 넣는 것이 정석 문법이야!
