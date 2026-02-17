@@ -433,10 +433,261 @@ header {
 }
 
 /* ========================================
+   모달 (업종 선택 팝업)
+======================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 26, 61, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background: var(--color-white);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 900px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.3s ease;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: var(--color-text-light);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--color-accent);
+    transform: rotate(90deg);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
    유틸리티 클래스
 ======================================== */
 .hidden {
     display: none !important;
+}
+
+/* ========================================
+   모달 (Phase 2 신규)
+======================================== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 26, 61, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    position: relative;
+    background: var(--color-white);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 26, 61, 0.3);
+    z-index: 1001;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--color-text-light);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background: var(--color-background);
+    color: var(--color-primary);
+}
+
+.modal-content h2 {
+    color: var(--color-primary);
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.modal-industry-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+/* ========================================
+   블러 효과 (Phase 2 결제 화면)
+======================================== */
+.blurred-section {
+    position: relative;
+    filter: blur(8px);
+    pointer-events: none;
+    user-select: none;
+}
+
+.unlock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(241, 245, 249, 0.95);
+    z-index: 10;
+    gap: 20px;
+    padding: 40px;
+}
+
+.unlock-overlay h3 {
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.payment-button {
+    padding: 16px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.payment-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.free-code-button {
+    padding: 12px 30px;
+    background: white;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.free-code-button:hover {
+    background: var(--color-primary);
+    color: white;
+}
+
+.code-input-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.code-input {
+    padding: 12px 20px;
+    border: 2px solid var(--color-text-light);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    text-align: center;
+    width: 200px;
+    margin-right: 10px;
+}
+
+.code-submit-btn {
+    padding: 12px 30px;
+    background: var(--color-success);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.code-submit-btn:hover {
+    background: #059669;
 }
 
 .text-center {
