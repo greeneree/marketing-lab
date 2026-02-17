@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마케팅랩 - 15분 입력으로 받는 마케팅 전략</title>
+    <title>마케팅랩 - 15분 입력으로 받는 AI 마케팅 전략</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -31,7 +31,7 @@
                         15분 입력으로 받는
                         <span class="highlight">AI 마케팅 전략</span>
                     </h1>
-                    <p class="hero-subtitle">전문가급 컨설팅을 9,900원에</p>
+                    <p class="hero-subtitle">McKinsey급 컨설팅을 9,900원에</p>
                     <button class="cta-button" onclick="openIndustryModal()">무료로 시작하기 →</button>
                 </div>
             </div>
@@ -364,26 +364,21 @@
                             </div>
                         </div>
 
-                        <!-- 리뷰 수 및 평균 평점 -->
+                        <!-- 리뷰 수 (Phase 2: 평점 제거, 구글 제거) -->
                         <div class="form-group">
-                            <label>리뷰 수 및 평균 평점 <span class="required">*</span></label>
+                            <label>리뷰 수 <span class="required">*</span></label>
+                            <small style="color: #64748b; display: block; margin-bottom: 10px;">
+                                네이버와 카카오의 리뷰 수만 입력하세요
+                            </small>
                             
-                            <div style="display: grid; grid-template-columns: 100px 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center;">
+                            <div style="display: grid; grid-template-columns: 100px 1fr; gap: 10px; margin-bottom: 10px; align-items: center;">
                                 <span style="font-weight: 600;">네이버</span>
                                 <input type="number" placeholder="리뷰 수" class="review-count" data-platform="naver" required>
-                                <input type="number" step="0.1" min="0" max="5" placeholder="평점 (0~5)" class="review-rating" data-platform="naver" required>
                             </div>
                             
-                            <div style="display: grid; grid-template-columns: 100px 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center;">
+                            <div style="display: grid; grid-template-columns: 100px 1fr; gap: 10px; align-items: center;">
                                 <span style="font-weight: 600;">카카오</span>
                                 <input type="number" placeholder="리뷰 수" class="review-count" data-platform="kakao" required>
-                                <input type="number" step="0.1" min="0" max="5" placeholder="평점 (0~5)" class="review-rating" data-platform="kakao" required>
-                            </div>
-                            
-                            <div style="display: grid; grid-template-columns: 100px 1fr 1fr; gap: 10px; align-items: center;">
-                                <span style="font-weight: 600;">구글</span>
-                                <input type="number" placeholder="리뷰 수" class="review-count" data-platform="google" required>
-                                <input type="number" step="0.1" min="0" max="5" placeholder="평점 (0~5)" class="review-rating" data-platform="google" required>
                             </div>
                         </div>
 
@@ -412,9 +407,24 @@
                                 
                                 <div class="form-group">
                                     <label>현재 사용 중인 해시태그</label>
+                                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                            <input type="checkbox" id="no-hashtags" onchange="toggleHashtagInput()">
+                                            <span style="color: #64748b; font-size: 0.9rem;">해시태그 사용 안 함 (트렌드)</span>
+                                        </label>
+                                    </div>
                                     <input type="text" id="sns-hashtags" placeholder="예: #마포한의원 #홍대한의원">
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- 우리 가게만의 특장점 (Phase 2 신규) -->
+                        <div class="form-group">
+                            <label>우리 가게만의 특장점</label>
+                            <small id="strength-placeholder" style="color: #64748b; display: block; margin-bottom: 10px;">
+                                예: 필라테스 연계 자세 치료
+                            </small>
+                            <input type="text" id="unique-strength" placeholder="업종별 예시를 참고하세요">
                         </div>
 
                         <!-- 다음: 업종별 특화 정보 -->
@@ -704,6 +714,37 @@
             </div>
         </section>
     </main>
+
+    <!-- 업종 선택 모달 (Phase 2 신규) -->
+    <div id="industry-modal" class="modal hidden">
+        <div class="modal-overlay" onclick="closeIndustryModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeIndustryModal()">×</button>
+            <h2 style="margin-bottom: 30px;">업종을 선택해주세요</h2>
+            
+            <div class="modal-industry-grid">
+                <button class="industry-button" onclick="selectIndustry('한의원', '🏥')">
+                    <div class="industry-icon">🏥</div>
+                    <div class="industry-name">한의원</div>
+                </button>
+                
+                <button class="industry-button" onclick="selectIndustry('카페', '☕')">
+                    <div class="industry-icon">☕</div>
+                    <div class="industry-name">카페</div>
+                </button>
+                
+                <button class="industry-button" onclick="selectIndustry('헬스장', '💪')">
+                    <div class="industry-icon">💪</div>
+                    <div class="industry-name">헬스장</div>
+                </button>
+                
+                <button class="industry-button" onclick="selectIndustry('네일샵', '💅')">
+                    <div class="industry-icon">💅</div>
+                    <div class="industry-name">네일샵</div>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script src="js/main.js"></script>
 </body>
