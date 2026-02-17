@@ -7,9 +7,9 @@ let isPaid = false; // 결제 상태
 
 // 마포구 동명 데이터
 const mapoDistricts = [
-    "공덕동", "아현동", "도화동", "용강동", "대흥동", "상수동",
-    "염리동", "신수동", "서강동", "서교동", "합정동", "동교동", 
-    "망원동", "연남동", "성산동", "중동", "상암동", "창전동", "중동", "현석동"
+    "공덕동", "아현동", "도화동", "용강동", "대흥동",
+    "염리동", "신수동", "서강동", "서교동", "합정동",
+    "망원동", "연남동", "성산동", "중동", "상암동"
 ];
 
 // 업종별 특장점 예시
@@ -591,9 +591,11 @@ function applyBlurEffect() {
     sections.forEach(sectionId => {
         const section = document.getElementById(sectionId);
         if (section && section.parentElement) {
+            // 부모 요소에 relative 포지션 추가
+            section.parentElement.style.position = 'relative';
             section.parentElement.classList.add('blurred-section');
             
-            // 언락 오버레이 추가
+            // 언락 오버레이 추가 (blur 영향 받지 않음)
             const overlay = document.createElement('div');
             overlay.className = 'unlock-overlay';
             overlay.innerHTML = `
@@ -608,7 +610,7 @@ function applyBlurEffect() {
                     <input type="text" id="code-input" class="code-input" placeholder="코드 입력" maxlength="5">
                     <button class="code-submit-btn" onclick="validateCode()">확인</button>
                     <p style="color: #64748b; font-size: 0.9rem; margin-top: 10px;">
-                        정답: 12345
+                        💡 힌트: 12345
                     </p>
                 </div>
             `;
