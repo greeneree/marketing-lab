@@ -1,7 +1,7 @@
 {
   "name": "marketing-lab",
-  "version": "2.2.0",
-  "description": "소상공인을 위한 AI 마케팅 전략 생성기 - Phase 1 완료",
+  "version": "2.3.0",
+  "description": "소상공인을 위한 AI 마케팅 전략 생성기 - Phase 2 완료",
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
@@ -20,7 +20,8 @@
     "korea",
     "consulting",
     "gemini",
-    "strategy"
+    "strategy",
+    "payment"
   ],
   "author": "MarketingLab Team",
   "license": "MIT"
