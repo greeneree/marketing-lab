@@ -29,13 +29,7 @@ export default async function handler(req, res) {
         console.log("📝 생성된 프롬프트 길이:", prompt.length);
 
         // Gemini API 호출
-        const model = genAI.getGenerativeModel(
-        { 
-                model: "gemini-2.5-flash", 
-                generationConfig: { responseMimeType: "application/json" } 
-        },
-              { apiVersion: "v1beta" } 
-);
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
         const result = await model.generateContent(prompt);
         const response = await result.response;
         const text = response.text();
@@ -64,7 +58,7 @@ function generatePrompt(data) {
         industry, storeName, district, monthlySales, realProfit,
         platforms, timeSchedule, concerns,
         topServices, competitors, faqs, bookingMethods, paymentMethods,
-        reviews, snsInfo, industrySpecific
+        reviews, snsInfo, industrySpecific, uniqueStrength  // Phase 2: uniqueStrength 추가
     } = data;
 
     // 히트 상품 추출
@@ -88,15 +82,14 @@ function generatePrompt(data) {
         ? faqs.map((q, i) => `${i+1}. ${q}`).join('\n  ')
         : '없음';
 
-    // 리뷰 분석
+    // Phase 2: 리뷰 분석 (평점 제거, 리뷰 수만)
     const reviewsText = `
-  네이버: ${reviews?.naver?.count || 0}개, ${reviews?.naver?.rating || 0}점
-  카카오: ${reviews?.kakao?.count || 0}개, ${reviews?.kakao?.rating || 0}점
-  구글: ${reviews?.google?.count || 0}개, ${reviews?.google?.rating || 0}점`;
+  네이버: ${reviews?.naver?.count || 0}개
+  카카오: ${reviews?.kakao?.count || 0}개`;
 
-    // SNS 정보
+    // Phase 2: SNS 정보 (해시태그 사용 안 함 옵션)
     const snsText = snsInfo 
-        ? `운영 중 (팔로워 ${snsInfo.followers}명, 주 ${snsInfo.frequency}회 업로드, 해시태그: ${snsInfo.hashtags})`
+        ? `운영 중 (팔로워 ${snsInfo.followers}명, 주 ${snsInfo.frequency}회 업로드${snsInfo.noHashtags ? ', 해시태그 사용 안 함 (트렌드 반영)' : `, 해시태그: ${snsInfo.hashtags}`})`
         : '미운영';
 
     // 업종별 특화 정보
@@ -104,10 +97,10 @@ function generatePrompt(data) {
         .map(([key, value]) => `  ${key}: ${value}`)
         .join('\n');
 
-    // 평균 리뷰 평점 계산
-    const avgRating = reviews 
-        ? ((reviews.naver.rating + reviews.kakao.rating + reviews.google.rating) / 3).toFixed(1)
-        : 0;
+    // Phase 2: 특장점 추가
+    const strengthText = uniqueStrength 
+        ? `\n**우리 가게만의 특장점**\n${uniqueStrength}` 
+        : '';
 
     // 예상 매출 증가
     const targetSales = Math.round(monthlySales * 1.3);
@@ -132,10 +125,10 @@ function generatePrompt(data) {
 - 온라인 등록: ${platforms?.join(', ') || '없음'}
 
 **영업 시간대**
-- 평일 한가한 시간: ${timeSchedule?.weekday?.idle?.start}:00 ~ ${timeSchedule?.weekday?.idle?.end}:00
-- 평일 바쁜 시간: ${timeSchedule?.weekday?.busy?.start}:00 ~ ${timeSchedule?.weekday?.busy?.end}:00
-- 주말 한가한 시간: ${timeSchedule?.weekend?.idle?.start}:00 ~ ${timeSchedule?.weekend?.idle?.end}:00
-- 주말 바쁜 시간: ${timeSchedule?.weekend?.busy?.start}:00 ~ ${timeSchedule?.weekend?.busy?.end}:00
+- 평일 한가한 시간: ${timeSchedule?.weekday?.idle?.start === 'none' ? '없음' : timeSchedule?.weekday?.idle?.start + ':00'} ~ ${timeSchedule?.weekday?.idle?.end === 'none' ? '없음' : timeSchedule?.weekday?.idle?.end + ':00'}
+- 평일 바쁜 시간: ${timeSchedule?.weekday?.busy?.start === 'none' ? '없음' : timeSchedule?.weekday?.busy?.start + ':00'} ~ ${timeSchedule?.weekday?.busy?.end === 'none' ? '없음' : timeSchedule?.weekday?.busy?.end + ':00'}
+- 주말 한가한 시간: ${timeSchedule?.weekend?.idle?.start === 'none' ? '없음' : timeSchedule?.weekend?.idle?.start + ':00'} ~ ${timeSchedule?.weekend?.idle?.end === 'none' ? '없음' : timeSchedule?.weekend?.idle?.end + ':00'}
+- 주말 바쁜 시간: ${timeSchedule?.weekend?.busy?.start === 'none' ? '없음' : timeSchedule?.weekend?.busy?.start + ':00'} ~ ${timeSchedule?.weekend?.busy?.end === 'none' ? '없음' : timeSchedule?.weekend?.busy?.end + ':00'}
 
 **현재 고민**
 ${concerns?.map((c, i) => `${i+1}. ${c}`).join('\n') || '없음'}
@@ -154,9 +147,92 @@ ${concerns?.map((c, i) => `${i+1}. ${c}`).join('\n') || '없음'}
 - 예약: ${bookingMethods?.join(', ') || '없음'}
 - 결제: ${paymentMethods?.join(', ') || '없음'}
 
-**리뷰 현황**
+**리뷰 현황** (Phase 2: 평점 제거, 총량 집중)
 ${reviewsText}
-- 평균 평점: ${avgRating}/5.0
+
+**SNS 운영**
+${snsText}
+
+**업종별 특화 정보 (${industry})**
+${specificText || '  없음'}
+${strengthText}
+
+---
+
+# 🎯 전략 수립 지침 (Ver 2.3 업데이트)
+
+1. **[리뷰 분석]**: 구글 리뷰는 한국 시장 영향력이 낮으므로 분석에서 배제하라. 네이버/카카오의 **리뷰 총량**과 **긍정 키워드 패턴**에 집중하라. 평점이 아닌 **리뷰 수**를 기반으로 신뢰도를 판단하라.
+
+2. **[해시태그 전략]**: 사용자가 해시태그를 쓰지 않는다면, 이를 '약점'으로 잡지 마라. 대신 **알고리즘 최적화**를 위한 **고품질 이미지/영상 콘텐츠 전략**에 더 집중하라. "해시태그 미사용 = 2024년 트렌드 반영"으로 인식하라.
+
+3. **[1인 운영 한계]**: "staff: no" 같은 기계적인 표현 금지. 대신 **"1인 원장 체제의 물리적 CAPA 한계"**라는 전문적인 용어를 사용하고, 원장의 손이 덜 가는 **자동화 예약 시스템**을 제안하라.
+
+4. **[로컬 제휴 강화]**: PT 센터와의 교차 할인, **Brunch(브런치)** 또는 블로그 연재를 통한 전문가 브랜딩 등, 사장님이 제안한 **특장점**을 전략의 핵심으로 활용하라.
+
+5. **[특장점 활용]**: "${uniqueStrength || '특장점 없음'}"을 차별화 포인트로 적극 활용하라. 이것이 경쟁사 대비 강점이 될 수 있는지 심도 있게 분석하라.
+
+6. **[시간대 전략]**: "없음"으로 표시된 시간대는 운영하지 않는 시간이므로 해당 시간대 전략을 제외하라.
+
+---
+
+# ⚠️ 출력 규칙
+
+**반드시 아래 JSON 형식으로만 응답하세요. 마크다운이나 추가 설명은 절대 금지입니다.**
+
+\`\`\`json
+{
+  "diagnosis": {
+    "strengths": ["강점 1: 구체적인 설명", "강점 2: 구체적인 설명", "강점 3: 구체적인 설명"],
+    "weaknesses": ["약점 1: 뼈아픈 지적 (1인 CAPA 한계 등 전문 용어)", "약점 2: 뼈아픈 지적", "약점 3: 뼈아픈 지적"]
+  },
+  "strategies": [
+    {
+      "title": "전략 제목",
+      "description": "구체적인 실행 방법 (최소 3문장 이상, 로컬 제휴 및 특장점 활용)",
+      "cost": "0원" 또는 "5만원~10만원",
+      "difficulty": "하" | "중" | "상",
+      "effect": "예상 효과 (구체적 숫자 포함)"
+    }
+  ],
+  "weeklyPlan": [
+    {
+      "week": 1,
+      "theme": "1주차 테마",
+      "days": ["1일차: 액션", "2일차: 액션", "3일차: 액션", "4일차: 액션", "5일차: 액션", "6일차: 액션", "7일차: 액션"]
+    },
+    // ... 12주차까지
+  ],
+  "hashtags": ["#마포${district}", "#${industry}", ...총 15개],
+  "keywords": {
+    "naver": ["키워드1", "키워드2", "키워드3"],
+    "kakao": ["키워드1", "키워드2", "키워드3"]
+  },
+  "expectedResults": {
+    "current": {
+      "sales": ${monthlySales * 10000},
+      "profit": ${realProfit ? realProfit * 10000 : monthlySales * 10000 * 0.25}
+    },
+    "after": {
+      "sales": ${targetSales * 10000},
+      "profit": ${(realProfit ? realProfit : monthlySales * 0.25) * 10000 + increaseProfit * 10000}
+    },
+    "increase": {
+      "sales": ${increaseSales * 10000},
+      "salesPercent": 30,
+      "profit": ${increaseProfit * 10000},
+      "profitPercent": ${realProfit ? 40 : 40}
+    },
+    "roi": 3.5,
+    "period": "3개월"
+  }
+}
+\`\`\`
+
+**JSON 외 다른 텍스트는 절대 포함하지 마세요!**
+`;
+
+    return prompt;
+}
 
 **SNS 운영**
 ${snsText}
