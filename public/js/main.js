@@ -589,32 +589,36 @@ function applyBlurEffect() {
     ];
     
     sections.forEach(sectionId => {
-        const section = document.getElementById(sectionId);
-        if (section && section.parentElement) {
-            // 부모 요소에 relative 포지션 추가
-            section.parentElement.style.position = 'relative';
-            section.parentElement.classList.add('blurred-section');
-            
-            // 언락 오버레이 추가 (blur 영향 받지 않음)
-            const overlay = document.createElement('div');
-            overlay.className = 'unlock-overlay';
-            overlay.innerHTML = `
-                <h3>🔒 전체 전략을 확인하시겠어요?</h3>
-                <button class="payment-button" onclick="showPaymentOptions()">
-                    ₩9,900 결제하고 전체 보기
-                </button>
-                <button class="free-code-button" onclick="showCodeInput()">
-                    무료코드로 미리보기
-                </button>
-                <div id="code-input-section" class="code-input-section hidden">
-                    <input type="text" id="code-input" class="code-input" placeholder="코드 입력" maxlength="5">
-                    <button class="code-submit-btn" onclick="validateCode()">확인</button>
-                    <p style="color: #64748b; font-size: 0.9rem; margin-top: 10px;">
-                        💡 힌트: 12345
-                    </p>
-                </div>
-            `;
-            section.parentElement.appendChild(overlay);
+        const container = document.getElementById(sectionId);
+        if (container) {
+            // container의 부모 card를 찾음
+            const card = container.closest('.card');
+            if (card) {
+                // card에 blurred-section 클래스 추가
+                card.classList.add('blurred-section');
+                card.style.position = 'relative';
+                
+                // 언락 오버레이 추가 (blur 영향 받지 않음)
+                const overlay = document.createElement('div');
+                overlay.className = 'unlock-overlay';
+                overlay.innerHTML = `
+                    <h3>🔒 전체 전략을 확인하시겠어요?</h3>
+                    <button class="payment-button" onclick="showPaymentOptions()">
+                        ₩9,900 결제하고 전체 보기
+                    </button>
+                    <button class="free-code-button" onclick="showCodeInput()">
+                        무료코드로 미리보기
+                    </button>
+                    <div id="code-input-section-${sectionId}" class="code-input-section hidden">
+                        <input type="text" class="code-input" placeholder="코드 입력" maxlength="5">
+                        <button class="code-submit-btn" onclick="validateCode()">확인</button>
+                        <p style="color: #64748b; font-size: 0.9rem; margin-top: 10px;">
+                            💡 힌트: 12345
+                        </p>
+                    </div>
+                `;
+                card.appendChild(overlay);
+            }
         }
     });
 }
@@ -630,14 +634,25 @@ function showPaymentOptions() {
 // 코드 입력 섹션 표시 (Phase 2 신규)
 // ========================================
 function showCodeInput() {
-    document.getElementById('code-input-section').classList.remove('hidden');
+    // 모든 코드 입력 섹션 표시
+    document.querySelectorAll('.code-input-section').forEach(section => {
+        section.classList.remove('hidden');
+    });
 }
 
 // ========================================
 // 코드 검증 (Phase 2 신규)
 // ========================================
 function validateCode() {
-    const code = document.getElementById('code-input').value.trim();
+    // 모든 입력창에서 코드 확인
+    const codeInputs = document.querySelectorAll('.code-input');
+    let code = '';
+    
+    codeInputs.forEach(input => {
+        if (input.value.trim()) {
+            code = input.value.trim();
+        }
+    });
     
     if (code === '12345') {
         // 결제 상태 저장
