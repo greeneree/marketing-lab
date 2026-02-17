@@ -29,7 +29,13 @@ export default async function handler(req, res) {
         console.log("📝 생성된 프롬프트 길이:", prompt.length);
 
         // Gemini API 호출
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+        const model = genAI.getGenerativeModel(
+        { 
+                model: "gemini-2.5-flash", 
+                generationConfig: { responseMimeType: "application/json" } 
+        },
+              { apiVersion: "v1beta" } 
+);
         const result = await model.generateContent(prompt);
         const response = await result.response;
         const text = response.text();
