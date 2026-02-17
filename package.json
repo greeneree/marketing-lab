@@ -1,14 +1,14 @@
 {
   "name": "marketing-lab",
-  "version": "2.3.0",
-  "description": "소상공인을 위한 AI 마케팅 전략 생성기 - Phase 2 완료",
+  "version": "2.3.3",
+  "description": "소상공인을 위한 AI 마케팅 전략 생성기 - Phase 2 완료 (Node.js 런타임 수정)",
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
     "deploy": "vercel --prod"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0"
+    "@google/generative-ai": "^0.23.0"
   },
   "engines": {
     "node": "20.x"
