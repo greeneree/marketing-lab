@@ -7,6 +7,10 @@ if (!apiKey) {
     console.error("❌ CRITICAL: API Key가 설정되지 않았습니다!");
 }
 
+console.log("🔑 API Key 상태:", apiKey ? `설정됨 (${apiKey.substring(0, 7)}...)` : "❌ 없음");
+console.log("📌 Vercel 배포 확인: 2026-02-17 v2.3.3");
+console.log("🔧 Node.js 버전:", process.version);
+
 const genAI = new GoogleGenerativeAI(apiKey);
 
 export default async function handler(req, res) {
@@ -93,7 +97,7 @@ function generatePrompt(data) {
     const increaseProfit = realProfit ? Math.round(realProfit * 0.4) : Math.round(monthlySales * 0.1);
 
     return `
-당신은 15년 경력의 소규모 상인들에게 최적화된 로컬 비즈니스 컨설턴트입니다. 다음 정보를 바탕으로 실행 가능한 전략을 JSON 형식으로만 응답하세요.
+당신은 15년 경력의 로컬 비즈니스 컨설턴트입니다. 다음 정보를 바탕으로 실행 가능한 전략을 JSON 형식으로만 응답하세요.
 
 # 📊 가게 정보
 - 상호명: ${storeName} (${industry})
