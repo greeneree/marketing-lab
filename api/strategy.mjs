@@ -2,8 +2,14 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // 환경 변수 우선순위 설정
 const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GOOGLE_AISTUDIO_KEY;
+
+if (!apiKey) {
+    console.error("❌ CRITICAL: API Key가 설정되지 않았습니다!");
+}
+
 console.log("🔑 API Key 상태:", apiKey ? `설정됨 (${apiKey.substring(0, 7)}...)` : "❌ 없음");
 console.log("📌 Vercel 배포 확인: 2026-02-17 v2.3.2");
+console.log("🔧 Node.js 버전:", process.version);
 
 const genAI = new GoogleGenerativeAI(apiKey);
 
