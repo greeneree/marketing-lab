@@ -295,13 +295,12 @@ function goToIndustrySpecific() {
         return;
     }
     
-    // 리뷰 정보 검증
+    // 리뷰 정보 검증 (리뷰 수만 체크, 평점은 Phase 2에서 제거됨)
     const reviewCounts = document.querySelectorAll('.review-count');
-    const reviewRatings = document.querySelectorAll('.review-rating');
     
-    for (let i = 0; i < 3; i++) {
-        if (!reviewCounts[i].value || !reviewRatings[i].value) {
-            alert('모든 플랫폼의 리뷰 수와 평점을 입력해주세요');
+    for (let i = 0; i < reviewCounts.length; i++) {
+        if (!reviewCounts[i].value || reviewCounts[i].value < 0) {
+            alert('모든 플랫폼의 리뷰 수를 입력해주세요 (0 이상)');
             return;
         }
     }
