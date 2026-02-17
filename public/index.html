@@ -3,242 +3,707 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마케팅랩 - 소상공인을 위한 AI 마케팅 전략</title>
+    <title>마케팅랩 - 15분 입력으로 받는 AI 마케팅 전략</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- 헤더 -->
     <header>
         <div class="container">
-            <h1>🚀 마케팅랩</h1>
-            <p>소상공인을 위한 AI 맞춤 마케팅 전략</p>
+            <div class="header-content">
+                <a href="#" class="logo">
+                    ⚡ 마케팅랩
+                </a>
+                <span class="beta-badge">BETA</span>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <!-- 사전 질문 폼 -->
-        <section id="question-form" class="card">
-            <h2>💬 가게 정보를 알려주세요</h2>
-            
-            <div class="form-group">
-                <label for="industry">업종 선택 *</label>
-                <select id="industry" required>
-                    <option value="">선택해주세요</option>
-                    <option value="한의원">한의원</option>
-                    <option value="카페">카페</option>
-                    <option value="헬스장">헬스장</option>
-                    <option value="네일샵">네일샵</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="store-name">가게 이름 *</label>
-                <input type="text" id="store-name" placeholder="예: 행복한의원" required>
-            </div>
-
-            <div class="form-group">
-                <label for="district">위치 선택 (마포구) *</label>
-                <select id="district" required>
-                    <option value="">동을 선택해주세요</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="monthly-sales">월 평균 매출 (만원) *</label>
-                <input type="number" id="monthly-sales" placeholder="예: 1500" required>
-            </div>
-
-            <div class="form-group">
-                <label>온라인 등록 여부 *</label>
-                <div class="checkbox-group">
-                    <label>
-                        <input type="checkbox" name="platform" value="naver"> 네이버플레이스
-                    </label>
-                    <label>
-                        <input type="checkbox" name="platform" value="kakao"> 카카오맵
-                    </label>
-                    <label>
-                        <input type="checkbox" name="platform" value="other"> 기타
-                    </label>
-                    <label>
-                        <input type="checkbox" name="platform" value="none"> 없음
-                    </label>
+    <!-- 메인 컨텐츠 -->
+    <main>
+        <!-- 화면 1: 소개 화면 -->
+        <section id="intro-screen">
+            <!-- 히어로 섹션 -->
+            <div class="hero-section">
+                <div class="container">
+                    <h1 class="hero-title">
+                        15분 입력으로 받는
+                        <span class="highlight">AI 마케팅 전략</span>
+                    </h1>
+                    <p class="hero-subtitle">McKinsey급 컨설팅을 9,900원에</p>
+                    <button class="cta-button" onclick="scrollToIndustry()">무료로 시작하기</button>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>주요 히트 상품이 있나요? *</label>
-                <p class="help-text">고객들이 주로 이용/구매하여 매출의 30% 이상을 차지하는 상품이 있나요?</p>
-                <div class="radio-group">
-                    <label>
-                        <input type="radio" name="hit-product" value="yes"> 있다
-                    </label>
-                    <label>
-                        <input type="radio" name="hit-product" value="no"> 없다
-                    </label>
-                </div>
-            </div>
+            <!-- 특징 카드 섹션 -->
+            <div class="features-section">
+                <div class="container">
+                    <div class="features-grid">
+                        <!-- 특징 1: 15분 만에 맞춤 전략 -->
+                        <div class="feature-card">
+                            <div class="feature-icon icon-speed">⚡</div>
+                            <h3>15분 만에 맞춤 전략</h3>
+                            <p>
+                                복잡한 컨설팅 없이 간단한 질문만으로 우리 
+                                가게만의 맞춤 전략을 받아보세요
+                            </p>
+                        </div>
 
-            <div class="form-group" id="hit-product-input" style="display: none;">
-                <label for="hit-product-name">히트 상품 이름</label>
-                <input type="text" id="hit-product-name" placeholder="예: 망원라떼, 어깨통증 집중 치료">
-            </div>
+                        <!-- 특징 2: 9,900원 -->
+                        <div class="feature-card">
+                            <div class="feature-icon icon-price">$</div>
+                            <h3>9,900원</h3>
+                            <p>
+                                <span class="feature-highlight">정상가 19,900원</span><br>
+                                베타 테스트 기간 동안 특별 할인가로 제공합니다
+                            </p>
+                        </div>
 
-            <div class="form-group">
-                <label for="concern">현재 가장 큰 고민 *</label>
-                <textarea id="concern" rows="3" placeholder="예: 신규 환자가 없어요, 주말만 손님이 많아요" required></textarea>
-            </div>
-
-            <!-- 추가 입력 (선택사항) -->
-            <div class="form-section-header">
-                <h3>📝 추가 정보 (가능하면 입력해주세요)</h3>
-                <p class="help-text">더 정확한 전략을 위해 아래 정보를 입력해주세요. (선택사항)</p>
-            </div>
-
-            <div class="form-group">
-                <label for="top-services">주요 서비스 TOP 3 및 가격</label>
-                <input type="text" id="top-services" placeholder="예: 추나요법 5만원, 침술 3만원, 한약 15만원">
-            </div>
-
-            <div class="form-group">
-                <label>경쟁 매장 3곳</label>
-                <p class="help-text">주변 경쟁 업체 정보 (선택사항)</p>
-                <div class="competitor-row">
-                    <input type="text" class="competitor-name" placeholder="매장 이름">
-                    <input type="text" class="competitor-feature" placeholder="특징">
-                    <input type="text" class="competitor-price" placeholder="가격대">
-                </div>
-                <div class="competitor-row">
-                    <input type="text" class="competitor-name" placeholder="매장 이름">
-                    <input type="text" class="competitor-feature" placeholder="특징">
-                    <input type="text" class="competitor-price" placeholder="가격대">
-                </div>
-                <div class="competitor-row">
-                    <input type="text" class="competitor-name" placeholder="매장 이름">
-                    <input type="text" class="competitor-feature" placeholder="특징">
-                    <input type="text" class="competitor-price" placeholder="가격대">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>고객이 자주 묻는 질문</label>
-                <div id="faq-container">
-                    <input type="text" class="faq-input" placeholder="예: 주차 가능한가요?">
-                </div>
-                <button type="button" id="add-faq-btn" class="btn-add">+ 질문 추가 (최대 5개)</button>
-            </div>
-
-            <div class="form-group">
-                <label>예약/결제 방식 *</label>
-                <div class="checkbox-group">
-                    <label>
-                        <input type="checkbox" name="booking" value="naver"> 네이버예약
-                    </label>
-                    <label>
-                        <input type="checkbox" name="booking" value="phone"> 전화
-                    </label>
-                    <label>
-                        <input type="checkbox" name="booking" value="onsite"> 현장
-                    </label>
-                    <label>
-                        <input type="checkbox" name="booking" value="other" id="booking-other"> 기타
-                    </label>
-                </div>
-                <input type="text" id="booking-other-input" placeholder="예: 캐치테이블" style="display: none; margin-top: 10px;">
-            </div>
-
-            <div class="form-group">
-                <label for="reviews">리뷰 수 및 평균 평점 *</label>
-                <div class="review-inputs">
-                    <div class="review-row">
-                        <label>네이버</label>
-                        <input type="number" id="review-naver-count" placeholder="리뷰 수" required>
-                        <input type="number" id="review-naver-rating" placeholder="평점" step="0.1" min="0" max="5" required>
-                    </div>
-                    <div class="review-row">
-                        <label>카카오</label>
-                        <input type="number" id="review-kakao-count" placeholder="리뷰 수" required>
-                        <input type="number" id="review-kakao-rating" placeholder="평점" step="0.1" min="0" max="5" required>
-                    </div>
-                    <div class="review-row">
-                        <label>구글</label>
-                        <input type="number" id="review-google-count" placeholder="리뷰 수" required>
-                        <input type="number" id="review-google-rating" placeholder="평점" step="0.1" min="0" max="5" required>
+                        <!-- 특징 3: 12주 실행 계획 -->
+                        <div class="feature-card">
+                            <div class="feature-icon icon-plan">📅</div>
+                            <h3>12주 실행 계획</h3>
+                            <p>
+                                주차별 체크리스트와 함께 독서 실행 가능한 
+                                구체적인 액션 플랜을 제공합니다
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="strength">가게의 강점 한 문장 (사장님 관점) *</label>
-                <input type="text" id="strength" placeholder="예: 포근한 분위기, 최신 장비 도입, 20년 경력 원장님, 독특한 맛 등" required>
+            <!-- 업종 선택 섹션 -->
+            <div class="industry-section">
+                <div class="container">
+                    <h2 class="section-title">현재 마포구 4개 업종 베타 테스트 중</h2>
+                    <p class="section-subtitle">더 많은 업종은 곧 추가될 예정입니다</p>
+                    
+                    <div class="industry-grid">
+                        <button class="industry-button" onclick="selectIndustry('한의원', '🏥')">
+                            <div class="industry-icon">🏥</div>
+                            <div class="industry-name">한의원</div>
+                        </button>
+                        
+                        <button class="industry-button" onclick="selectIndustry('카페', '☕')">
+                            <div class="industry-icon">☕</div>
+                            <div class="industry-name">카페</div>
+                        </button>
+                        
+                        <button class="industry-button" onclick="selectIndustry('헬스장', '💪')">
+                            <div class="industry-icon">💪</div>
+                            <div class="industry-name">헬스장</div>
+                        </button>
+                        
+                        <button class="industry-button" onclick="selectIndustry('네일샵', '💅')">
+                            <div class="industry-icon">💅</div>
+                            <div class="industry-name">네일샵</div>
+                        </button>
+                    </div>
+                </div>
             </div>
-
-            <button id="generate-btn" class="btn-primary">AI 전략 생성하기 ✨</button>
         </section>
 
-        <!-- 로딩 -->
-        <section id="loading" style="display: none;">
-            <div class="loader"></div>
-            <p>AI가 맞춤 전략을 만들고 있어요... 잠시만 기다려주세요! ⏱️</p>
+        <!-- 화면 2: 정보 입력 화면 (hidden) -->
+        <section id="info-screen" class="hidden">
+            <div class="container">
+                <div class="form-section">
+                    <h2 class="text-center mb-20" id="form-title">
+                        <span id="selected-industry-icon">🏥</span> 
+                        <span id="selected-industry-name">한의원</span> 정보 입력
+                    </h2>
+                    
+                    <form id="info-form">
+                        <!-- 기본 정보 -->
+                        <div class="form-group">
+                            <label for="store-name">가게 이름 <span class="required">*</span></label>
+                            <input type="text" id="store-name" placeholder="예: 행복한의원" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="district">위치 (마포구 동 선택) <span class="required">*</span></label>
+                            <select id="district" required>
+                                <option value="">동을 선택해주세요</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="monthly-sales">월 평균 매출 (만원) <span class="required">*</span></label>
+                            <input type="number" id="monthly-sales" placeholder="예: 1500" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="real-profit">실 수익 (사장 수령액, 만원)</label>
+                            <input type="number" id="real-profit" placeholder="예: 500">
+                            <small style="color: #64748b;">선택 입력 - 더 정확한 전략을 위해 입력해주세요</small>
+                        </div>
+
+                        <!-- 온라인 등록 여부 -->
+                        <div class="form-group">
+                            <label>온라인 등록 여부 <span class="required">*</span></label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="platform" value="naver"> 네이버플레이스
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="platform" value="kakao"> 카카오맵
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="platform" value="other"> 기타
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="platform" value="none"> 없음
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 평일/주말 시간대 -->
+                        <div class="form-group">
+                            <label>평일 한가한 시간 <span class="required">*</span></label>
+                            <div style="display: flex; gap: 10px;">
+                                <select id="weekday-idle-start" required style="flex: 1;">
+                                    <option value="">시작</option>
+                                </select>
+                                <span style="padding: 12px;">~</span>
+                                <select id="weekday-idle-end" required style="flex: 1;">
+                                    <option value="">종료</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>평일 바쁜 시간 <span class="required">*</span></label>
+                            <div style="display: flex; gap: 10px;">
+                                <select id="weekday-busy-start" required style="flex: 1;">
+                                    <option value="">시작</option>
+                                </select>
+                                <span style="padding: 12px;">~</span>
+                                <select id="weekday-busy-end" required style="flex: 1;">
+                                    <option value="">종료</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>주말 한가한 시간 <span class="required">*</span></label>
+                            <div style="display: flex; gap: 10px;">
+                                <select id="weekend-idle-start" required style="flex: 1;">
+                                    <option value="">시작</option>
+                                </select>
+                                <span style="padding: 12px;">~</span>
+                                <select id="weekend-idle-end" required style="flex: 1;">
+                                    <option value="">종료</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>주말 바쁜 시간 <span class="required">*</span></label>
+                            <div style="display: flex; gap: 10px;">
+                                <select id="weekend-busy-start" required style="flex: 1;">
+                                    <option value="">시작</option>
+                                </select>
+                                <span style="padding: 12px;">~</span>
+                                <select id="weekend-busy-end" required style="flex: 1;">
+                                    <option value="">종료</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 현재 고민 -->
+                        <div class="form-group">
+                            <label>현재 고민 (중복 선택 가능) <span class="required">*</span></label>
+                            <div class="checkbox-group" style="flex-direction: column; align-items: flex-start;">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="concern" value="신규유입"> 신규 유입 부족
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="concern" value="객단가"> 객단가 낮음
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="concern" value="유휴시간"> 유휴 시간 발생
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="concern" value="매출하락"> 매출 하락
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="concern" value="기타" id="concern-other-checkbox"> 기타
+                                </label>
+                                <input type="text" id="concern-other-input" placeholder="기타 고민을 입력하세요" 
+                                       style="display: none; margin-top: 10px; width: 100%;">
+                            </div>
+                        </div>
+
+                        <!-- 다음 버튼 -->
+                        <button type="button" class="btn-primary" onclick="goToAdditionalInfo()">
+                            다음: 추가 정보 입력 →
+                        </button>
+                    </form>
+                </div>
+            </div>
         </section>
 
-        <!-- 결과 화면 -->
-        <section id="result" style="display: none;">
-            <!-- 현황 진단 -->
-            <div class="card">
-                <h2>📊 현황 진단</h2>
-                <div id="diagnosis"></div>
-            </div>
+        <!-- 화면 3: 추가 정보 입력 -->
+        <section id="additional-info-screen" class="hidden">
+            <div class="container">
+                <div class="form-section">
+                    <h2 class="text-center mb-20">추가 정보 입력</h2>
+                    <p class="text-center" style="color: #64748b; margin-bottom: 30px;">
+                        더 정확한 전략을 위해 추가 정보를 입력해주세요
+                    </p>
+                    
+                    <form id="additional-info-form">
+                        <!-- 주요 서비스 Top 3 -->
+                        <div class="form-group">
+                            <label>주요 서비스 Top 3 <span class="required">*</span></label>
+                            <small style="color: #64748b; display: block; margin-bottom: 10px;">
+                                각 서비스명과 가격을 입력하고, 히트상품이면 체크하세요
+                            </small>
+                            
+                            <div id="services-container">
+                                <div class="service-row" style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+                                    <input type="text" placeholder="서비스명 (예: 추나요법)" style="flex: 2;" class="service-name" required>
+                                    <input type="number" placeholder="가격 (원)" style="flex: 1;" class="service-price" required>
+                                    <label style="display: flex; align-items: center; gap: 5px; white-space: nowrap;">
+                                        <input type="checkbox" class="service-hit"> 히트상품
+                                    </label>
+                                </div>
+                                <div class="service-row" style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+                                    <input type="text" placeholder="서비스명" style="flex: 2;" class="service-name" required>
+                                    <input type="number" placeholder="가격 (원)" style="flex: 1;" class="service-price" required>
+                                    <label style="display: flex; align-items: center; gap: 5px; white-space: nowrap;">
+                                        <input type="checkbox" class="service-hit"> 히트상품
+                                    </label>
+                                </div>
+                                <div class="service-row" style="display: flex; gap: 10px; margin-bottom: 10px; align-items: center;">
+                                    <input type="text" placeholder="서비스명" style="flex: 2;" class="service-name" required>
+                                    <input type="number" placeholder="가격 (원)" style="flex: 1;" class="service-price" required>
+                                    <label style="display: flex; align-items: center; gap: 5px; white-space: nowrap;">
+                                        <input type="checkbox" class="service-hit"> 히트상품
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- 즉시 실행 전략 -->
-            <div class="card">
-                <h2>🎯 즉시 실행 전략</h2>
-                <div id="strategies"></div>
-            </div>
+                        <!-- 경쟁 매장 3곳 -->
+                        <div class="form-group">
+                            <label>경쟁 매장 3곳</label>
+                            <small style="color: #64748b; display: block; margin-bottom: 10px;">
+                                이름, 특징, 가격대를 입력하세요 (선택 입력)
+                            </small>
+                            
+                            <div id="competitors-container">
+                                <div class="competitor-row" style="display: grid; grid-template-columns: 2fr 3fr 1.5fr; gap: 10px; margin-bottom: 10px;">
+                                    <input type="text" placeholder="매장 이름" class="competitor-name">
+                                    <input type="text" placeholder="특징 (예: 인테리어 좋음)" class="competitor-feature">
+                                    <input type="text" placeholder="가격대" class="competitor-price">
+                                </div>
+                                <div class="competitor-row" style="display: grid; grid-template-columns: 2fr 3fr 1.5fr; gap: 10px; margin-bottom: 10px;">
+                                    <input type="text" placeholder="매장 이름" class="competitor-name">
+                                    <input type="text" placeholder="특징" class="competitor-feature">
+                                    <input type="text" placeholder="가격대" class="competitor-price">
+                                </div>
+                                <div class="competitor-row" style="display: grid; grid-template-columns: 2fr 3fr 1.5fr; gap: 10px; margin-bottom: 10px;">
+                                    <input type="text" placeholder="매장 이름" class="competitor-name">
+                                    <input type="text" placeholder="특징" class="competitor-feature">
+                                    <input type="text" placeholder="가격대" class="competitor-price">
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- 12주 실행 계획 (캘린더) -->
-            <div class="card">
-                <h2>📅 12주 실행 계획</h2>
-                <div class="progress-container">
-                    <div class="progress-header">
-                        <span>달성률</span>
-                        <span id="progress-percentage">0%</span>
+                        <!-- 고객이 자주 묻는 질문 -->
+                        <div class="form-group">
+                            <label>고객이 자주 묻는 질문 (FAQ)</label>
+                            <div id="faq-container">
+                                <input type="text" placeholder="예: 주차 가능한가요?" class="faq-input" style="margin-bottom: 10px;">
+                            </div>
+                            <button type="button" class="btn-add-faq" onclick="addFaqInput()" 
+                                    style="background: #f1f5f9; color: #001a3d; border: 2px solid #e2e8f0; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                                + FAQ 추가 (최대 5개)
+                            </button>
+                        </div>
+
+                        <!-- 예약 방식 -->
+                        <div class="form-group">
+                            <label>예약 방식 <span class="required">*</span></label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="booking" value="naver"> 네이버플레이스
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="booking" value="kakao"> 카카오맵
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="booking" value="phone"> 전화
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="booking" value="walkin"> 현장
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="booking" value="other"> 기타
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 결제 방식 -->
+                        <div class="form-group">
+                            <label>결제 방식 <span class="required">*</span></label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="payment" value="card"> 카드
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="payment" value="cash"> 현금
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="payment" value="transfer"> 계좌이체
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="payment" value="mobile"> 모바일페이
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 리뷰 수 및 평균 평점 -->
+                        <div class="form-group">
+                            <label>리뷰 수 및 평균 평점 <span class="required">*</span></label>
+                            
+                            <div style="display: grid; grid-template-columns: 100px 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center;">
+                                <span style="font-weight: 600;">네이버</span>
+                                <input type="number" placeholder="리뷰 수" class="review-count" data-platform="naver" required>
+                                <input type="number" step="0.1" min="0" max="5" placeholder="평점 (0~5)" class="review-rating" data-platform="naver" required>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 100px 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: center;">
+                                <span style="font-weight: 600;">카카오</span>
+                                <input type="number" placeholder="리뷰 수" class="review-count" data-platform="kakao" required>
+                                <input type="number" step="0.1" min="0" max="5" placeholder="평점 (0~5)" class="review-rating" data-platform="kakao" required>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 100px 1fr 1fr; gap: 10px; align-items: center;">
+                                <span style="font-weight: 600;">구글</span>
+                                <input type="number" placeholder="리뷰 수" class="review-count" data-platform="google" required>
+                                <input type="number" step="0.1" min="0" max="5" placeholder="평점 (0~5)" class="review-rating" data-platform="google" required>
+                            </div>
+                        </div>
+
+                        <!-- SNS 운영 여부 -->
+                        <div class="form-group">
+                            <label>SNS 운영 여부</label>
+                            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="sns-active" value="yes" onchange="toggleSnsFields(true)"> 예
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="radio" name="sns-active" value="no" onchange="toggleSnsFields(false)" checked> 아니오
+                                </label>
+                            </div>
+                            
+                            <div id="sns-details" style="display: none; padding: 20px; background: #f1f5f9; border-radius: 10px;">
+                                <div class="form-group">
+                                    <label>팔로워 수</label>
+                                    <input type="number" id="sns-followers" placeholder="예: 1200">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>주 몇 회 업로드하나요?</label>
+                                    <input type="number" id="sns-frequency" placeholder="예: 3">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>현재 사용 중인 해시태그</label>
+                                    <input type="text" id="sns-hashtags" placeholder="예: #마포한의원 #홍대한의원">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 다음: 업종별 특화 정보 -->
+                        <button type="button" class="btn-primary" onclick="goToIndustrySpecific()">
+                            다음: 업종별 특화 정보 →
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 화면 4: 업종별 특화 필드 -->
+        <section id="industry-specific-screen" class="hidden">
+            <div class="container">
+                <div class="form-section">
+                    <h2 class="text-center mb-20">
+                        <span id="specific-industry-icon">🏥</span>
+                        <span id="specific-industry-name">한의원</span> 특화 정보
+                    </h2>
+                    <p class="text-center" style="color: #64748b; margin-bottom: 30px;">
+                        업종별 맞춤 전략을 위한 추가 정보를 입력해주세요
+                    </p>
+                    
+                    <form id="industry-specific-form">
+                        <!-- 한의원 전용 필드 -->
+                        <div id="industry-fields-한의원" class="industry-fields hidden">
+                            <h3 style="color: #001a3d; margin-bottom: 20px;">💊 물리적 한계</h3>
+                            
+                            <div class="form-group">
+                                <label>동시 진료 베드 수 <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="beds" placeholder="예: 4" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>원장 1인당 적정 진료 시간 (분) <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="treatment-time" placeholder="예: 30" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>물리치료사 등 보조 인력 유무 <span class="required">*</span></label>
+                                <div style="display: flex; gap: 15px;">
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="staff-한의원" value="yes" required> 있음
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="staff-한의원" value="no"> 없음
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <h3 style="color: #001a3d; margin: 30px 0 20px;">⚡ 업종별 특화</h3>
+                            
+                            <div class="form-group">
+                                <label>비급여 비중 (%) <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="non-insurance-ratio" 
+                                       placeholder="예: 60" min="0" max="100" required>
+                                <small style="color: #64748b;">비급여 진료(한약, 추나 등) 매출 비중</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>야간 진료 여부 <span class="required">*</span></label>
+                                <div style="display: flex; gap: 15px;">
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="night-한의원" value="yes" required> 운영 중
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="night-한의원" value="no"> 미운영
+                                    </label>
+                                </div>
+                                <small style="color: #64748b;">직장인 타겟 여부 확인</small>
+                            </div>
+                        </div>
+
+                        <!-- 네일샵 전용 필드 -->
+                        <div id="industry-fields-네일샵" class="industry-fields hidden">
+                            <h3 style="color: #001a3d; margin-bottom: 20px;">💅 물리적 한계</h3>
+                            
+                            <div class="form-group">
+                                <label>동시 시술 가능 인원 (의자 수) <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="seats" placeholder="예: 3" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>시술자 숙련도에 따른 평균 소요 시간 (분) <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="service-time" placeholder="예: 90" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>예약 간 여유 시간 (분) <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="buffer-time" placeholder="예: 15" required>
+                                <small style="color: #64748b;">청소/준비 시간</small>
+                            </div>
+                            
+                            <h3 style="color: #001a3d; margin: 30px 0 20px;">⚡ 업종별 특화</h3>
+                            
+                            <div class="form-group">
+                                <label>회원권 비중 (%) <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="membership-ratio" 
+                                       placeholder="예: 40" min="0" max="100" required>
+                                <small style="color: #64748b;">선결제 회원 수 및 소진율</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>주력 디자인 유무 <span class="required">*</span></label>
+                                <div style="display: flex; gap: 15px;">
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="design-네일샵" value="yes" required> 있음
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="design-네일샵" value="no"> 없음
+                                    </label>
+                                </div>
+                                <small style="color: #64748b;">이달의 아트 등 고단가 상품 유무</small>
+                            </div>
+                        </div>
+
+                        <!-- 카페 전용 필드 -->
+                        <div id="industry-fields-카페" class="industry-fields hidden">
+                            <h3 style="color: #001a3d; margin-bottom: 20px;">☕ 물리적 한계</h3>
+                            
+                            <div class="form-group">
+                                <label>매장 내 좌석 수 <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="seats" placeholder="예: 20" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>테이크아웃 vs 홀 매출 비중 (테이크아웃 %) <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="takeout-ratio" 
+                                       placeholder="예: 30" min="0" max="100" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>배달 플랫폼 의존도 (%) <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="delivery-ratio" 
+                                       placeholder="예: 10" min="0" max="100" required>
+                            </div>
+                            
+                            <h3 style="color: #001a3d; margin: 30px 0 20px;">⚡ 업종별 특화</h3>
+                            
+                            <div class="form-group">
+                                <label>피크 타임 <span class="required">*</span></label>
+                                <div style="display: flex; gap: 15px;">
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="peak-카페" value="lunch" required> 점심 (오피스 상권)
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="peak-카페" value="afternoon"> 오후 (주거지)
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>시그니처 메뉴 유무 <span class="required">*</span></label>
+                                <div style="display: flex; gap: 15px;">
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="signature-카페" value="yes" required> 있음
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px;">
+                                        <input type="radio" name="signature-카페" value="no"> 없음
+                                    </label>
+                                </div>
+                                <small style="color: #64748b;">객단가를 높여주는 대표 디저트/음료</small>
+                            </div>
+                        </div>
+
+                        <!-- 헬스장 전용 필드 -->
+                        <div id="industry-fields-헬스장" class="industry-fields hidden">
+                            <h3 style="color: #001a3d; margin-bottom: 20px;">💪 물리적 한계</h3>
+                            
+                            <div class="form-group">
+                                <label>동시 수용 가능 인원 <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="capacity" placeholder="예: 30" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>PT 수업 가능 시간대 (시간/일) <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="pt-hours" placeholder="예: 8" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>PT 강사 수 <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="trainers" placeholder="예: 2" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>노후 장비 비율 (%) <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="old-equipment" 
+                                       placeholder="예: 20" min="0" max="100" required>
+                            </div>
+                            
+                            <h3 style="color: #001a3d; margin: 30px 0 20px;">⚡ 업종별 특화</h3>
+                            
+                            <div class="form-group">
+                                <label>재등록률 (%) <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="renewal-rate" 
+                                       placeholder="예: 65" min="0" max="100" required>
+                                <small style="color: #64748b;">신규 대비 기존 회원 유지 비중</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>수업 유형 비중 (1:1 PT %) <span class="required">*</span></label>
+                                <input type="number" class="industry-input" data-field="pt-ratio" 
+                                       placeholder="예: 40" min="0" max="100" required>
+                                <small style="color: #64748b;">나머지는 그룹 수업 비중</small>
+                            </div>
+                        </div>
+
+                        <!-- 전략 분석 리포트 확인하기 버튼 -->
+                        <button type="button" class="btn-primary" onclick="submitAndGenerate()">
+                            전략 분석 리포트 확인하기
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 로딩 화면 -->
+        <section id="loading-screen" class="hidden">
+            <div class="container">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <h3>AI가 맞춤 전략을 생성하고 있습니다...</h3>
+                    <p style="color: #64748b; margin-top: 10px;">30초 정도 소요됩니다</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 결과 화면 (다음 단계에서 구현) -->
+        <!-- 결과 화면 (임시) -->
+        <section id="result-screen" class="hidden">
+            <div class="container">
+                <div class="result-header" style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="color: #001a3d; font-size: 2rem; margin-bottom: 10px;">
+                        ✨ AI 전략 분석 완료!
+                    </h2>
+                    <p style="color: #64748b;">
+                        <span id="result-store-name"></span>님의 맞춤 전략을 확인하세요
+                    </p>
+                </div>
+
+                <!-- 진단 결과 -->
+                <div class="card">
+                    <h3 style="color: #001a3d; margin-bottom: 20px;">📊 현황 진단</h3>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <h4 style="color: #10b981; margin-bottom: 15px;">💪 강점</h4>
+                        <div id="diagnosis-strengths"></div>
                     </div>
-                    <div class="progress-bar">
-                        <div id="progress-fill" style="width: 0%"></div>
+                    
+                    <div>
+                        <h4 style="color: #ff4e3a; margin-bottom: 15px;">⚠️ 약점</h4>
+                        <div id="diagnosis-weaknesses"></div>
                     </div>
                 </div>
-                <div id="calendar"></div>
-            </div>
 
-            <!-- 추천 인스타그램 해시태그 -->
-            <div class="card">
-                <h2>📱 추천 인스타그램 해시태그</h2>
-                <div id="hashtags"></div>
-            </div>
+                <!-- 즉시 실행 전략 -->
+                <div class="card">
+                    <h3 style="color: #001a3d; margin-bottom: 20px;">🚀 즉시 실행 전략</h3>
+                    <div id="strategies-container"></div>
+                </div>
 
-            <!-- 네이버/카카오맵 키워드 -->
-            <div class="card">
-                <h2>🔍 네이버/카카오맵 추천 키워드</h2>
-                <div id="keywords"></div>
-            </div>
+                <!-- 12주 실행 계획 -->
+                <div class="card">
+                    <h3 style="color: #001a3d; margin-bottom: 20px;">📅 12주 실행 계획</h3>
+                    <div id="weekly-plan-container"></div>
+                </div>
 
-            <!-- 예상 성과 -->
-            <div class="card">
-                <h2>💰 예상 성과</h2>
-                <div id="expected-results"></div>
-            </div>
+                <!-- 해시태그 & 키워드 -->
+                <div class="card">
+                    <h3 style="color: #001a3d; margin-bottom: 20px;">🏷️ 추천 해시태그 & 키워드</h3>
+                    <div id="hashtags-container" style="margin-bottom: 30px;"></div>
+                    <div id="keywords-container"></div>
+                </div>
 
-            <button id="reset-btn" class="btn-secondary">새로운 전략 만들기</button>
+                <!-- 예상 결과 -->
+                <div class="card">
+                    <h3 style="color: #001a3d; margin-bottom: 20px;">💰 예상 결과 (3개월 후)</h3>
+                    <div id="expected-results-container"></div>
+                </div>
+
+                <!-- 새로운 전략 생성 버튼 -->
+                <div style="text-align: center; margin-top: 40px;">
+                    <button onclick="location.reload()" class="btn-primary">
+                        🔄 새로운 전략 생성하기
+                    </button>
+                </div>
+            </div>
         </section>
     </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 마케팅랩. All rights reserved.</p>
-            <p><a href="mailto:jink30@gmail.com">jink30@gmail.com</a></p>
-        </div>
-    </footer>
 
     <script src="js/main.js"></script>
 </body>
